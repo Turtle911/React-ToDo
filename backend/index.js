@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const { createTodo, updateTodo } = require('./types.js');
 const { todo } = require('./db.js');
+const PORT = process.env.PORT;
 app.use(express.json());
 
 app.post('/todo', async (req, res) => {
@@ -45,3 +47,5 @@ app.put('/completed', async (req, res) => {
         }
     );
 });
+
+app.listen(PORT);
