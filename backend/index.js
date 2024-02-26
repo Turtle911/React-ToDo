@@ -36,12 +36,17 @@ app.put('/completed', async (req, res) => {
     }
 
     //send to database
-    await todo.update(
-        {
-            _id: req.body.id,
-        },
-        {
-            completed: true,
-        }
-    );
+    try {
+        await todo.updateOne(
+            {
+                _id: req.body.id,
+            },
+            {
+                completed: true,
+            }
+        );
+    } catch (e) {
+        res.status(411).json({ msg: 'Wrong Inputs!' });
+    }
+    res.json({ msg: 'Todo completed successfully!' });
 });
