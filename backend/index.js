@@ -1,9 +1,13 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
+
 const express = require('express');
 const app = express();
 const { createTodo, updateTodo } = require('./types.js');
 const { todo } = require('./db.js');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
+const cors = require('cors');
+
+app.use(cors());
 app.use(express.json());
 
 app.post('/todo', async (req, res) => {
@@ -24,9 +28,13 @@ app.post('/todo', async (req, res) => {
     res.json({ msg: 'Todo created successfully!' });
 });
 
+app.get('/api/port', async (req, res) => {
+    res.json({ port: PORT });
+});
+
 app.get('/todos', async (req, res) => {
     const todos = await todo.find({});
-    res.json(todos);
+    res.json({ todos });
 });
 
 app.put('/completed', async (req, res) => {
